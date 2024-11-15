@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Смени комнату</title>
+    <style>
+        body {
+            color: orange;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .room-card {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin: 10px;
+            display: inline-block;
+            width: 200px;
+        }
+        a.button {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: orange;
+            color: white;
+            text-decoration: none;
+            font-size: 1em;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Добро пожаловать на сайт "Смени комнату"!</h1>
+    <p>На этой странице отображаются комнаты, доступные для обмена:</p>
+    <div class="rooms">
+        {% for room in rooms %}
+            <div class="room-card">
+                <h3>Комната {{ room.room_number }}</h3>
+                <p>{{ room.description }}</p>
+            </div>
+        {% endfor %}
+    </div>
+    <a href="{{ url_for('add_room') }}" class="button">Добавить новую комнату</a>
+    <a href="/logout" class="button">Выйти</a>
+</body>
+</html>

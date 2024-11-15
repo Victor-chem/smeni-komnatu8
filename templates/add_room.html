@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавить комнату</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: orange;
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+            margin-top: 20px;
+        }
+        label, input, textarea {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        input, textarea {
+            padding: 5px;
+            font-size: 1em;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: orange;
+            color: white;
+            border: none;
+            font-size: 1em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Добавить новую комнату</h1>
+    <form action="/add_room" method="post">
+        <label for="room_number">Номер комнаты:</label>
+        <input type="text" id="room_number" name="room_number" required>
+
+        <label for="description">Описание:</label>
+        <textarea id="description" name="description" rows="4" required></textarea>
+
+        <button type="submit">Добавить комнату</button>
+    </form>
+</body>
+</html>
