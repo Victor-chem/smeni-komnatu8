@@ -56,5 +56,17 @@
     </div>
     <a href="{{ url_for('add_room') }}" class="button">Добавить новую комнату</a>
     <a href="/logout" class="button">Выйти</a>
+    {% for room in rooms %}
+<div class="room-card">
+    <h3>Комната {{ room.room_number }}</h3>
+    <p>{{ room.description }}</p>
+    {% if session.get('user_email') == 'v.fofanov1@g.nsu.ru' %}
+        <form action="{{ url_for('delete_room', room_id=room.id) }}" method="post">
+            <button type="submit" class="delete-button">Удалить</button>
+        </form>
+    {% endif %}
+</div>
+{% endfor %}
+
 </body>
 </html>
