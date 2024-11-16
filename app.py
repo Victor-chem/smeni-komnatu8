@@ -78,13 +78,15 @@ def logout():
 def add_room():
     if 'user_email' not in session:
         return redirect(url_for('login'))
-    existing_room = Room.query.filter_by(email=session['user_email']).first()
-    if existing_room:
-        flash('Вы уже создали комнату. Редактируйте её, если хотите внести изменения.')
-        return redirect(url_for('home'))
     if request.method == 'POST':
         room_number = request.form['room_number']
         description = request.form['description']
+
+        # Проверяем, есть ли уже такая комната
+        if Room.query.filter_by(room_number=room_number).first():
+            flash('Комната с таким номером уже существует!')
+            return redirect(url_for('add_room'))
+
         new_room = Room(room_number=room_number, description=description, email=session['user_email'])
         db.session.add(new_room)
         db.session.commit()
@@ -114,3 +116,9 @@ def view_activity():
 # Запуск приложения
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
+@app.route('/admin/view_rooms')
+def view_rooms():
+    if session.get('user_email') != ADMIN_EMAIL:
+        return "Доступ запрещен", 403
+    rooms = Room.query.all()
+    return render_template('view_rooms.html', rooms=rooms)
