@@ -119,22 +119,20 @@ def log_to_db():
     activity = UserActivity(user_email=user_email, action=action)
     db.session.add(activity)
     db.session.commit()
-    
+  
 @app.route('/delete_room/<int:room_id>', methods=['POST'])
 def delete_room(room_id):
     # Проверяем, что пользователь администратор
     if session.get('user_email') != ADMIN_EMAIL:
         return "Доступ запрещен", 403
-
+@app.route('/admin/activity')
+def view_activity():
+    if session.get('user_email') != ADMIN_EMAIL:
+        return "Доступ запрещен", 403
+    activities = UserActivity.query.order_by(UserActivity.timestamp.desc()).all()
+    return render_template('admin_activity.html', activities=activities)
     # Находим комнату по ID и удаляем
     room = Room.query.get_or_404(room_id)
     db.session.delete(room)
     db.session.commit()
     return redirect(url_for('home'))
-@app.route('/admin/activity')
-def view_activity():
-    if session.get('user_email') != ADMIN_EMAIL:
-        return "Доступ запрещен", 403
-
-    activities = UserActivity.query.order_by(UserActivity.timestamp.desc()).all()
-    return render_template('admin_activity.html', activities=activities)
