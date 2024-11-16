@@ -116,3 +116,7 @@ def log_to_db():
     activity = UserActivity(user_email=user_email, action=action)
     db.session.add(activity)
     db.session.commit()
+@app.route('/admin/activity')
+def view_activity():
+    activities = UserActivity.query.order_by(UserActivity.timestamp.desc()).all()
+    return render_template('admin_activity.html', activities=activities)
