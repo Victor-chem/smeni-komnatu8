@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Смени комнату</title>
@@ -21,6 +22,17 @@
         a.button {
             display: inline-block;
             margin-top: 20px;
+        }
+        label, input, textarea {
+            display: block;
+            margin-bottom: 10px;
+            width: 100%;
+        }
+        input, textarea {
+            padding: 5px;
+            font-size: 1em;
+        }
+        button {
             padding: 10px 15px;
             background-color: orange;
             color: white;
