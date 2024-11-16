@@ -83,3 +83,36 @@ def add_room():
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 
+import logging
+from flask import Flask, request
+
+app = Flask(__name__)
+
+# Настройка логов
+logging.basicConfig(filename='user_activity.log', level=logging.INFO, format='%(asctime)s - %(message)s')
+
+@app.before_request
+def log_activity():
+    user = request.remote_addr  # IP-адрес пользователя
+    path = request.path  # Какой маршрут посещен
+    method = request.method  # GET, POST и т.д.
+    logging.info(f'User: {user}, Path: {path}, Method: {method}')
+
+from datetime import datetime
+
+class UserActivity(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_email = db.Column(db.String(100))  # Почта или IP
+    action = db.Column(db.String(200))  # Описание действия
+    timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
+# Не забудь создать таблицу
+with app.app_context():
+    db.create_all()
+@app.before_request
+def log_to_db():
+    user_email = session.get('user_email', 'Anonymous')  # Получаем почту, если пользователь залогинен
+    action = f'{request.method} {request.path}'
+    activity = UserActivity(user_email=user_email, action=action)
+    db.session.add(activity)
+    db.session.commit()
