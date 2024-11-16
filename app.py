@@ -31,9 +31,13 @@ class UserActivity(db.Model):
     action = db.Column(db.String(200))  # Описание действия
     timestamp = db.Column(db.DateTime, default=datetime.utcnow)  # Время действия
 
-# Создание базы данных
 with app.app_context():
-    db.create_all()
+    if not Room.query.first():  # Проверка, пустая ли таблица
+        room1 = Room(room_number="1", description="Комната тестовая 1", email="v.fofanov1@g.nsu.ru")
+        room2 = Room(room_number="2", description="Комната тестовая 2", email="v.fofanov1@g.nsu.ru")
+        db.session.add_all([room1, room2])
+        db.session.commit()
+
 
 # Логирование в базу данных
 @app.before_request
